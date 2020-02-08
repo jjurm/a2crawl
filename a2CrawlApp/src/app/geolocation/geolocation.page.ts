@@ -14,11 +14,9 @@ export class GeolocationPage implements OnInit, AfterViewInit {
   constructor(private geolocation: Geolocation) { }
 
   ngOnInit() {
-    console.log("in ngOnInit")
   }
 
   ngAfterViewInit(): void {
-    console.log("in ngAfterViewInit")
     this.geolocation.getCurrentPosition().then((resp) => {
       this.latitude = resp.coords.latitude;
       this.longitude = resp.coords.longitude;

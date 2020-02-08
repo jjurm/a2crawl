@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -25,6 +26,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ReactiveFormsModule
   ],
-  declarations: [DirectionPage]
+  declarations: [DirectionPage],
+  providers: [Geolocation]
 })
 export class DirectionPageModule {}
