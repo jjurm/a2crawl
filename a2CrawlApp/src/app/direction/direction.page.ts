@@ -1,9 +1,6 @@
   import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 declare var google;
-// import { Component, OnInit, AfterViewInit } from '@angular/core';
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { DirectionPage } from './direction.page';
 
 @Component({
   selector: 'app-direction',
@@ -26,7 +23,9 @@ export class DirectionPage implements OnInit, AfterViewInit {
   createDirectionForm() {
     this.directionForm = this.fb.group({
       source: ['', Validators.required],
-      destination: ['', Validators.required]
+      destination: ['', Validators.required],
+      interest: ['', Validators.required],
+      stops: ['', Validators.required]
     });
   }
 
