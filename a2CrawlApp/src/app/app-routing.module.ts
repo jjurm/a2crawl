@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'geolocation',
     loadChildren: () => import('./geolocation/geolocation.module').then( m => m.GeolocationPageModule)
+  },
+  {
+    path: 'direction',
+    loadChildren: () => import('./direction/direction.module').then( m => m.DirectionPageModule)
   }
 ];
 @NgModule({
