@@ -1,5 +1,7 @@
 {
   "name": "a2CrawlApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
