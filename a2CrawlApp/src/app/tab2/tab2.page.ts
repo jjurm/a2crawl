@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { GeolocationPageModule } from '../geolocation/geolocation.module';
+// import { GeolocationPageModule } from '../geolocation/geolocation.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 declare var google;
 
