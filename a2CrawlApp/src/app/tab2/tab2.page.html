@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form [formGroup]="directionForm" (ngSubmit)="calculateAndDisplayRoute(directionForm.value)">
+  <form [formGroup]="directionForm" (ngSubmit)="sendRequest(directionForm.value)">
     <ion-item>
       <ion-label position="floating">Starting Point</ion-label>
       <ion-input formControlName="source"></ion-input>
