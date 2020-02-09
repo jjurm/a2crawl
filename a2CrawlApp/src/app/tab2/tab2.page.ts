@@ -2,7 +2,9 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // import { GeolocationPageModule } from '../geolocation/geolocation.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http, Headers, RequestOptions } from '@angular/http'
+
 declare var google;
 
 @Component({
@@ -39,14 +41,25 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
     // this.http.get(url).toPromise().then(data => {
     //   console.log(data);
-      
+
     //   for (let key in data)
     //     if (data.hasOwnProperty(key))
     //       items.push(data[key]);
     // });
 
+    const httpOptions = {
+        headers: new HttpHeaders({
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
+          'Accept':'application/json',
+          'content-type':'application/x-www-form-urlencoded'})
+    };
+
+
     // POST request using JSON
-    this.http.post(url, items).toPromise().then((data:any) => {
+    this.http.post(url, items, httpOptions).toPromise().then((data:any) => {
+      console.log ("Beginning the POST request")
+      console.log(items)
       console.log(data);
       console.log(data.json.test);
       var json = JSON.stringify(data.json);
@@ -158,7 +171,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       }
     });
   }
-  
+
 }
 
 // calculateAndDisplayRoute(formValues) {
