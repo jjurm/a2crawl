@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 
 
 
-def pub_hunting(location,radius=5000,no_pubs=5):
+def pub_hunting(start_location,end_location,radius=5000,no_pubs=5):
+    
+    location = [(start_location[0]+end_location[0])/2,(start_location[1]+end_location[1])/2]
     api_key = "AIzaSyDi3Fjs700a1_leWLFm51blt8rMwz1s8as"
     
     loc_string = str(location[0])+","+str(location[1])
