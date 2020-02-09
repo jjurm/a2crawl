@@ -93,6 +93,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }, (response, status) => {
       if (status === 'OK') {
         that.directionsDisplay.setDirections(response);
+        console.log(response)
       } else {
         window.alert('Directions request failed due to ' + status);
       }
