@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
+    path: 'tab2Page',
+    loadChildren: () => import('./tab2/tab2.module').then( m => m.Tab2PageModule)
+  },
+  {
     path: 'dev-info-modal',
     loadChildren: () => import('./dev-info-modal/dev-info-modal.module').then( m => m.DevInfoModalPageModule)
   }
