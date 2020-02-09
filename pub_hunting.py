@@ -2,15 +2,16 @@ import json
 import requests
 import itertools
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 
 def pub_hunting(input_json):
-    start_location =input_json["start_location"]
-    end_location =input_json["end_location"]
+    start_location =input_json["start_location"].split(",")
+    end_location =input_json["end_location"].split(",")
     radius =input_json["radius"]
     no_pubs =input_json["no_pubs"]
+    start_location = [float(x) for x in start_location]
+    end_location = [float(x) for x in end_location]
 
     location = [(start_location[0]+end_location[0])/2,(start_location[1]+end_location[1])/2]
     api_key = "AIzaSyDi3Fjs700a1_leWLFm51blt8rMwz1s8as"
@@ -54,7 +55,7 @@ def pub_hunting(input_json):
         return matrix[index_a]["elements"][index_b]["duration"]["value"]
     
     def insert(arr, index, el):
-        a = arr.copy()
+        a = arr[:]
         a.insert(index, el)
         return a
     

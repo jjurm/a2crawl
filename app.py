@@ -8,9 +8,12 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/data/',method=['POST'])
+@app.route('/data/',methods=['GET'])
 def data():
+    print(request)
+    print(request)
     content = request.get_json()
+    print(content)
     return_data = ph.pub_hunting(content)
     return jsonify(return_data)
 
