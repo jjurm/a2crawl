@@ -11,12 +11,16 @@ describe('Tab2Page', () => {
     TestBed.configureTestingModule({
       declarations: [Tab2Page],
       imports: [IonicModule.forRoot()]
-    }).compileComponents();
+    })
+    .compileComponents();
 
+  }));
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(Tab2Page);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
