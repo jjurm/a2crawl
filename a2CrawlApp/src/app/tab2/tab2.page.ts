@@ -28,14 +28,20 @@ export class Tab2Page implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
+  // sendRequest sends to our backend the information extracted from the user input 
+  // and waits for a JSON back with the sequence of places to visit.
   sendRequest(formValues) {
-    // const url = `https://jsonplaceholder.typicode.com/todos/1`;  // get
-    // var items = [];
+    
+    // 'interest' variable form user inputs indicates the extra time they are willing
+    // to put into getting from point A to point B. We can use maths to convert that
+    // into a distance (radius) to look for points of interest within.
+    var extraDistance = (formValues.interest*60) * 2 
+
     const url = `http://www.juraj.space:5000/data`;  // post
     var items= {
       start_location: formValues.source,
       end_location: formValues.destination,
-      radius: formValues.interest,
+      radius: extraDistance,
       no_pubs: formValues.stops,
     };
 
@@ -53,9 +59,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.calculateAndDisplayRoute(data, formValues)
     });
 
-
   }
-
 
   createDirectionForm() {
     this.directionForm = this.fb.group({
@@ -68,7 +72,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const map = new google.maps.Map(this.mapNativeElement.nativeElement, {
-      center: {lat: -34.397, lng: 150.644},
+      center: {lat: 51.498356, lng: -0.176894},
       zoom: 15
     });
     this.initMap(map)
@@ -127,16 +131,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
     for (var i = 0; i < data.length; i++) {
       listPos.push({lat: data[i][0], lng: data[i][1]});
     }
-  // this will be the list of coordinates returned by the backend after the optimisation.
-  // var listPos = [{
-  //     lat: 48.8245306,
-  //     lng: 2.40735,
-  //   },
-  //   {
-  //     lat: 48.784,
-  //     lng: 2.2743419,
-  //   },
-  // ];
 
   console.log("LIST POS:")
   console.log(listPos)
@@ -147,16 +141,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
     var point = new google.maps.LatLng(listPos[i]['lat'], listPos[i]['lng']);
     locations.push({location: point});
 
-    // var start = new google.maps.LatLng(data[0][0], data[0][1]);
-    // var end = new google.maps.LatLng(data[data.length][0], data[data.length][1]);
-
     const that = this;
     this.directionsService.route({
       // the origin and destination will come from the user input (text fields)
       origin: formValues.source,
       destination: formValues.destination,
-      // origin: start,
-      // destination: end,
       // the waypoints come from the backend response (locations for loop above)
       waypoints: locations,
       travelMode: 'WALKING'
@@ -170,57 +159,4 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
 }
-
-// calculateAndDisplayRoute(formValues) {
-//   // var start = new google.maps.LatLng(51.49602770000001, -0.1703533);
-//   // var end = new google.maps.LatLng(51.4956583, -0.1452944);
-
-//   const map = new google.maps.Map(this.mapNativeElement.nativeElement, {
-//     center: {lat: -34.397, lng: 150.644}, // random values, are not displayed anyway
-//     zoom: 15
-//   });
-
-//   this.initMap(map)
-
-//   var listPos = [{
-//       arriveLat: 48.8245306,
-//       arriveLng: 2.40735,
-//       departLat: 48.799815,
-//       departLng: 2.257289
-//     },
-//     {
-//       arriveLat: 48.784,
-//       arriveLng: 2.2743419,
-//       departLat: 48.9016,
-//       departLng: 2.29873
-//     },
-//   ];
-//   var bounds = new google.maps.LatLngBounds();
-//   for (var i = 0; i < listPos.length; i++) {
-
-//     var startPoint = new google.maps.LatLng(listPos[i]['departLat'], listPos[i]['departLng']);
-//     var endPoint = new google.maps.LatLng(listPos[i]['arriveLat'], listPos[i]['arriveLng']);
-//     var directionsDisplay = new google.maps.DirectionsRenderer({
-//       map: map,
-//       preserveViewport: true
-//     });
-//     this.yallaCalculateAndDisplayRoute(this.directionsService, directionsDisplay, startPoint, endPoint, bounds, map);
-//   }
-// }
-
-// yallaCalculateAndDisplayRoute(directionsService, directionsDisplay, startPoint, endPoint, bounds, map) {
-//   directionsService.route({
-//     origin: startPoint,
-//     destination: endPoint,
-//     travelMode: 'WALKING'
-//   }, function(response, status) {
-//     if (status === 'OK') {
-//       directionsDisplay.setDirections(response);
-//       bounds.union(response.routes[0].bounds);
-//       map.fitBounds(bounds);
-//     } else {
-//       window.alert('Cannot find route' + status);
-//     }
-//   });
-// }
 }
