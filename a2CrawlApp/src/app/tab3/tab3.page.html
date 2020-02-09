@@ -1,8 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Information
-    </ion-title>
+    
+    <div id="toolbar">
+      <ion-title>
+        About Us
+      </ion-title>
+
+      <div id="logo-Logo">
+        <img id="logo-Icon"
+            src="../../../assets/daytripperlogo.png" width="35"/>
+      </div>
+    </div>
+
   </ion-toolbar>
 </ion-header>
 
@@ -31,7 +40,7 @@
       </ion-slide> <!-- End of Third Slide -->
 
       <ion-slide> <!-- Third Slide -->
-        <img class="minimiseSize" src="../../../assets/images/revealDev.png"/>
+        <img class="minimiseSize" src="../../../assets/images/revealDevs.png"/>
         <h2>Here's more info about us: Mystery Developers, reveal yourself!</h2>
         <ion-button fill="clear" (click)="presentModal()">Check some more info about us!<ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
       </ion-slide> <!-- End of Third Slide -->

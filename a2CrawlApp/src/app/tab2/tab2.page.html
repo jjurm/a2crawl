@@ -1,11 +1,21 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Route Planner</ion-title>
+    
+    <div id="toolbar">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Route Planner</ion-title>
+
+      <div id="logo-Logo">
+        <img id="logo-Icon"
+            src="../../../assets/daytripperlogo.png" width="35"/>
+      </div>
+    </div>
+
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <form [formGroup]="directionForm" (ngSubmit)="sendRequest(directionForm.value)">
     <ion-item>
@@ -27,4 +37,16 @@
     <ion-button expand="full" type="submit" [disabled]="!directionForm.valid">Get Directions</ion-button>
   </form>
   <div #mapElement class="map"></div>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+      <ion-fab-button color="light">
+        <ion-icon name="arrow-dropup"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="top">
+        <ion-fab-button color="light">
+          <a href="https://m.uber.com/ul/?client_id=VYJi6Pd9USt-5S8YmOd-z4snzh3s09vK"><ion-icon name="car"></ion-icon></a>
+        </ion-fab-button>
+      </ion-fab-list>
+  </ion-fab>
+
 </ion-content>

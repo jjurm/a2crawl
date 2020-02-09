@@ -1,4 +1,18 @@
 .map {
     height: 100%;
     // full page map for now
-  }
+}
+
+#logo-Icon{
+  display: inline-block;
+  float: right;
+}
+
+#logo-Logo{
+  margin-right: 1%;
+}
+
+#toolbar{
+  display: flex;
+  width: 100%;
+}
