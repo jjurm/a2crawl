@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 N=20
-np.random.seed(43)
+np.random.seed(46)
 points_original = np.random.normal(loc=0.5, scale=0.5, size=(N, 2))
 points = list(points_original)
 
@@ -20,9 +20,14 @@ def insert(arr, index, el):
     a.insert(index, el)
     return a
 
-def sqrt_dst(a, b):
+def loss_dst(a, b):
     dst = distance(a, b)
-    return np.power(dst / distance(A, B), 2)
+    total = distance(A, B)
+    #return np.power(max(0, dst / total - (total / (N+1))), 2) + max(0, dst / total - (total / (N+1)))
+    x = dst / (total / (N+1))
+    v = -np.log(x)
+    v *= 1 if v > 0 else -1*(x-1)
+    return v
 
 
 def distance(a, b):
@@ -32,7 +37,7 @@ def distance(a, b):
 def loss(path):
     arr = [A] + path + [B]
     pairs = ((arr[i], arr[i+1]) for i in range(len(arr)-1))
-    return sum(sqrt_dst(pair[0], pair[1]) for pair in pairs)
+    return sum(loss_dst(pair[0], pair[1]) for pair in pairs)
 
 while len(path) < 5:
     options = [(pointi, index) for pointi in range(len(points)) for index in range(0, len(path)+1)]
