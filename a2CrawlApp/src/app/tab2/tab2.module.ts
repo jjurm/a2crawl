@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Tab2Page } from './tab2.page';
 import { Routes, RouterModule } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { HttpClientModule } from '@angular/common/http';
 // import { DirectionPageRoutingModule } from './direction-routing.module';
 
 const routes: Routes = [
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     CommonModule,
     FormsModule,
+    HttpClientModule,
     // RouterModule.forChild([{ path: '', component: Tab2Page }])
     RouterModule.forChild(routes),
     ReactiveFormsModule

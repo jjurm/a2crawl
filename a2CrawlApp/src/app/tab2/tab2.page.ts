@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // import { GeolocationPageModule } from '../geolocation/geolocation.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { HttpClient } from '@angular/common/http';
 declare var google;
 
 @Component({
@@ -18,12 +19,41 @@ export class Tab2Page implements OnInit, AfterViewInit {
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
   directionForm: FormGroup;
-  constructor(private fb: FormBuilder, private geolocation: Geolocation) {
+  constructor(private fb: FormBuilder, private geolocation: Geolocation, private http: HttpClient) {
     this.createDirectionForm();
   }
 
   ngOnInit() {
   }
+
+  sendRequest(source, destination, radius, number) {
+    // const url = `https://jsonplaceholder.typicode.com/todos/1`;  // get
+    // var items = [];
+    const url = `http://juraj.space:5000/data`;  // post
+    var items= {
+      source: source,
+      destination: destination,
+      radius: radius,
+      number: number,
+    };
+
+    // this.http.get(url).toPromise().then(data => {
+    //   console.log(data);
+      
+    //   for (let key in data)
+    //     if (data.hasOwnProperty(key))
+    //       items.push(data[key]);
+    // });
+
+    // POST request using JSON
+    this.http.post(url, items).toPromise().then((data:any) => {
+      console.log(data);
+      console.log(data.json.test);
+      var json = JSON.stringify(data.json);
+      console.log(json)
+    });
+  }
+
 
   createDirectionForm() {
     this.directionForm = this.fb.group({
@@ -35,13 +65,17 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    const map = new google.maps.Map(this.mapNativeElement.nativeElement, {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 15
+    });
+    this.initMap(map)
+  }
+
+  initMap(map) {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.latitude = resp.coords.latitude;
       this.longitude = resp.coords.longitude;
-      const map = new google.maps.Map(this.mapNativeElement.nativeElement, {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 15
-      });
       const infoWindow = new google.maps.InfoWindow;
       const pos = {
         lat: this.latitude,
@@ -85,17 +119,98 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   calculateAndDisplayRoute(formValues) {
+
+    this.sendRequest(formValues.source, formValues.destination, formValues.interest, formValues.stops)
+
+  // this will be the list of coordinates returned by the backend after the optimisation.
+  var listPos = [{
+      lat: 48.8245306,
+      lng: 2.40735,
+    },
+    {
+      lat: 48.784,
+      lng: 2.2743419,
+    },
+  ];
+
+  var locations = []
+  for (var i = 0; i < listPos.length; i++) {
+    console.log(listPos[i]['lat'])
+    var point = new google.maps.LatLng(listPos[i]['lat'], listPos[i]['lng']);
+    locations.push({location: point});
+  }
+  console.log(locations)
+
     const that = this;
     this.directionsService.route({
+      // the origin and destination will come from the user input (text fields)
       origin: formValues.source,
       destination: formValues.destination,
+      // the waypoints come from the backend response (locations for loop above)
+      waypoints: locations,
       travelMode: 'WALKING'
     }, (response, status) => {
       if (status === 'OK') {
         that.directionsDisplay.setDirections(response);
+        console.log(response)
       } else {
         window.alert('Directions request failed due to ' + status);
       }
     });
   }
+  
+  
 }
+
+// calculateAndDisplayRoute(formValues) {
+//   // var start = new google.maps.LatLng(51.49602770000001, -0.1703533);
+//   // var end = new google.maps.LatLng(51.4956583, -0.1452944);
+
+//   const map = new google.maps.Map(this.mapNativeElement.nativeElement, {
+//     center: {lat: -34.397, lng: 150.644}, // random values, are not displayed anyway
+//     zoom: 15
+//   });
+
+//   this.initMap(map)
+
+//   var listPos = [{
+//       arriveLat: 48.8245306,
+//       arriveLng: 2.40735,
+//       departLat: 48.799815,
+//       departLng: 2.257289
+//     },
+//     {
+//       arriveLat: 48.784,
+//       arriveLng: 2.2743419,
+//       departLat: 48.9016,
+//       departLng: 2.29873
+//     },
+//   ];
+//   var bounds = new google.maps.LatLngBounds();
+//   for (var i = 0; i < listPos.length; i++) {
+
+//     var startPoint = new google.maps.LatLng(listPos[i]['departLat'], listPos[i]['departLng']);
+//     var endPoint = new google.maps.LatLng(listPos[i]['arriveLat'], listPos[i]['arriveLng']);
+//     var directionsDisplay = new google.maps.DirectionsRenderer({
+//       map: map,
+//       preserveViewport: true
+//     });
+//     this.yallaCalculateAndDisplayRoute(this.directionsService, directionsDisplay, startPoint, endPoint, bounds, map);
+//   }
+// }
+
+// yallaCalculateAndDisplayRoute(directionsService, directionsDisplay, startPoint, endPoint, bounds, map) {
+//   directionsService.route({
+//     origin: startPoint,
+//     destination: endPoint,
+//     travelMode: 'WALKING'
+//   }, function(response, status) {
+//     if (status === 'OK') {
+//       directionsDisplay.setDirections(response);
+//       bounds.union(response.routes[0].bounds);
+//       map.fitBounds(bounds);
+//     } else {
+//       window.alert('Cannot find route' + status);
+//     }
+//   });
+// }
