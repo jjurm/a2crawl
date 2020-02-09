@@ -1,9 +1,30 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab Two
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Route Planner</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content></ion-content>
+<ion-content>
+  <form [formGroup]="directionForm" (ngSubmit)="calculateAndDisplayRoute(directionForm.value)">
+    <ion-item>
+      <ion-label position="floating">Starting Point</ion-label>
+      <ion-input formControlName="source"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Where to?</ion-label>
+      <ion-input formControlName="destination"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Interest (e.g. Pubs)</ion-label>
+      <ion-input formControlName="interest"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Number of stops</ion-label>
+      <ion-input formControlName="stops"></ion-input>
+    </ion-item>
+    <ion-button expand="full" type="submit" [disabled]="!directionForm.valid">Get Directions</ion-button>
+  </form>
+  <div #mapElement class="map"></div>
+</ion-content>
