@@ -26,8 +26,8 @@ def pub_hunting(input_json):
 
 
 
-    radius =input_json["radius"]
-    no_pubs =input_json["no_pubs"]
+    radius =int(input_json["radius"])
+    no_pubs =int(input_json["no_pubs"])
     start_location = [float(x) for x in start_location]
     end_location = [float(x) for x in end_location]
 
@@ -45,8 +45,12 @@ def pub_hunting(input_json):
     
     
     pub_ids =[]
+    pub_ids.append(start_location)
+    pub_ids.append(end_location)
     list_of_pubs = ""
-    for i in b["results"][0:10]:
+    list_of_pubs + str(start_location[0])+","+str(start_location[1])+"|"
+    list_of_pubs + str(end_location[0])+","+str(end_location[1])+"|"
+    for i in b["results"][0:8]:
         list_of_pubs = list_of_pubs + str(i["geometry"]["location"]["lat"])+","+str(i["geometry"]["location"]["lng"])+"|"
         pub_ids.append([i["geometry"]["location"]["lat"],i["geometry"]["location"]["lng"]])
     list_of_pubs = list_of_pubs[:-1]
