@@ -28,24 +28,16 @@ export class Tab2Page implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
-  sendRequest(source, destination, radius, number) {
+  sendRequest(formValues) {
     // const url = `https://jsonplaceholder.typicode.com/todos/1`;  // get
     // var items = [];
     const url = `http://juraj.space:5000/data`;  // post
     var items= {
-      source: source,
-      destination: destination,
-      radius: radius,
-      number: number,
+      start_location: formValues.source,
+      end_location: formValues.destination,
+      radius: formValues.interest,
+      no_pubs: formValues.stops,
     };
-
-    // this.http.get(url).toPromise().then(data => {
-    //   console.log(data);
-
-    //   for (let key in data)
-    //     if (data.hasOwnProperty(key))
-    //       items.push(data[key]);
-    // });
 
     const httpOptions = {
         headers: new HttpHeaders({
@@ -57,14 +49,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
 
     // POST request using JSON
-    this.http.post(url, items, httpOptions).toPromise().then((data:any) => {
-      console.log ("Beginning the POST request")
-      console.log(items)
-      console.log(data);
-      console.log(data.json.test);
-      var json = JSON.stringify(data.json);
-      console.log(json)
+    this.http.post(url, items).toPromise().then((data:any) => {
+      this.calculateAndDisplayRoute(data, formValues)
     });
+
+
   }
 
 
@@ -131,41 +120,49 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
   }
 
-  calculateAndDisplayRoute(formValues) {
+  calculateAndDisplayRoute(data, formValues) {
 
-    this.sendRequest(formValues.source, formValues.destination, formValues.interest, formValues.stops)
-
+    console.log(data)
+    var listPos = []
+    for (var i = 0; i < data.length; i++) {
+      listPos.push({lat: data[i][0], lng: data[i][1]});
+    }
   // this will be the list of coordinates returned by the backend after the optimisation.
-  var listPos = [{
-      lat: 48.8245306,
-      lng: 2.40735,
-    },
-    {
-      lat: 48.784,
-      lng: 2.2743419,
-    },
-  ];
+  // var listPos = [{
+  //     lat: 48.8245306,
+  //     lng: 2.40735,
+  //   },
+  //   {
+  //     lat: 48.784,
+  //     lng: 2.2743419,
+  //   },
+  // ];
+
+  console.log("LIST POS:")
+  console.log(listPos)
+  console.log(listPos.length)
 
   var locations = []
-  for (var i = 0; i < listPos.length; i++) {
-    console.log(listPos[i]['lat'])
+  for (var i = 1; i < listPos.length-1; i++) {
     var point = new google.maps.LatLng(listPos[i]['lat'], listPos[i]['lng']);
     locations.push({location: point});
-  }
-  console.log(locations)
+
+    // var start = new google.maps.LatLng(data[0][0], data[0][1]);
+    // var end = new google.maps.LatLng(data[data.length][0], data[data.length][1]);
 
     const that = this;
     this.directionsService.route({
       // the origin and destination will come from the user input (text fields)
       origin: formValues.source,
       destination: formValues.destination,
+      // origin: start,
+      // destination: end,
       // the waypoints come from the backend response (locations for loop above)
       waypoints: locations,
       travelMode: 'WALKING'
     }, (response, status) => {
       if (status === 'OK') {
         that.directionsDisplay.setDirections(response);
-        console.log(response)
       } else {
         window.alert('Directions request failed due to ' + status);
       }
@@ -226,3 +223,4 @@ export class Tab2Page implements OnInit, AfterViewInit {
 //     }
 //   });
 // }
+}
