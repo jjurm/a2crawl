@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask,request,jsonify
 import pub_hunting as ph
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ def hello_world():
 def data():
     content = request.get_json()
     return_data = ph.pub_hunting(content)
-    return 'Hello data'
+    return jsonify(return_data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000)
