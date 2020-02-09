@@ -22,7 +22,7 @@ def pub_hunting(location,radius=5000,no_pubs=5):
     list_of_pubs = ""
     for i in b["results"][0:10]:
         list_of_pubs = list_of_pubs + str(i["geometry"]["location"]["lat"])+","+str(i["geometry"]["location"]["lng"])+"|"
-        pub_ids.append(i["place_id"])
+        pub_ids.append([i["geometry"]["location"]["lat"],i["geometry"]["location"]["lng"]])
     list_of_pubs = list_of_pubs[:-1]
     
     
