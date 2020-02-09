@@ -1,4 +1,5 @@
 from flask import Flask,request
+import pub_hunting as ph
 
 app = Flask(__name__)
 
@@ -10,6 +11,7 @@ def hello_world():
 @app.route('/data/',method=['POST'])
 def data():
     content = request.get_json()
+    return_data = ph.pub_hunting(content)
     return 'Hello data'
 
 if __name__ == '__main__':

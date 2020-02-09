@@ -6,8 +6,12 @@ import matplotlib.pyplot as plt
 
 
 
-def pub_hunting(start_location,end_location,radius=5000,no_pubs=5):
-    
+def pub_hunting(input_json):
+    start_location =input_json["start_location"]
+    end_location =input_json["end_location"]
+    radius =input_json["radius"]
+    no_pubs =input_json["no_pubs"]
+
     location = [(start_location[0]+end_location[0])/2,(start_location[1]+end_location[1])/2]
     api_key = "AIzaSyDi3Fjs700a1_leWLFm51blt8rMwz1s8as"
     
