@@ -2,12 +2,38 @@ import json
 import requests
 import itertools
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 
-def pub_hunting(location,radius=5000,no_pubs=5):
+def pub_hunting(input_json):
     api_key = "AIzaSyDi3Fjs700a1_leWLFm51blt8rMwz1s8as"
+
+    start_location_str =input_json["start_location"]
+    end_location_str =input_json["end_location"]
+
+    url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={}&inputtype=textquery&fields=geometry&key=".format(start_location_str)
+    url = url + api_key
+
+    response = requests.get(url)
+    b = response.json()
+    start_location = [b["candidates"][0]["geometry"]["location"]["lat"],b["candidates"][0]["geometry"]["location"]["lng"]]
+
+    url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input={}&inputtype=textquery&fields=geometry&key=".format(end_location_str)
+    url = url + api_key
+    response = requests.get(url)
+    b = response.json()
+    end_location = [b["candidates"][0]["geometry"]["location"]["lat"],b["candidates"][0]["geometry"]["location"]["lng"]]
+
+
+
+    radius =input_json["radius"]
+    no_pubs =input_json["no_pubs"]
+    start_location = [float(x) for x in start_location]
+    end_location = [float(x) for x in end_location]
+
+    location = [(start_location[0]+end_location[0])/2,(start_location[1]+end_location[1])/2]
+
+
     
     loc_string = str(location[0])+","+str(location[1])
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={}&radius={}&type=bar&key=".format(loc_string,str(radius))
@@ -48,7 +74,7 @@ def pub_hunting(location,radius=5000,no_pubs=5):
         return matrix[index_a]["elements"][index_b]["duration"]["value"]
     
     def insert(arr, index, el):
-        a = arr.copy()
+        a = arr[:]
         a.insert(index, el)
         return a
     
@@ -75,6 +101,4 @@ def pub_hunting(location,radius=5000,no_pubs=5):
     final_pubs = [pub_ids[x] for x in path]
     return final_pubs
     
-if __name__ == "__main__":
-    print(pub_hunting([51.497799,-0.179220]))
     

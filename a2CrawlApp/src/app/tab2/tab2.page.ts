@@ -159,7 +159,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
   }
   
-  
 }
 
 // calculateAndDisplayRoute(formValues) {
