@@ -48,8 +48,8 @@ def pub_hunting(input_json):
     pub_ids.append(start_location)
     pub_ids.append(end_location)
     list_of_pubs = ""
-    list_of_pubs + str(start_location[0])+","+str(start_location[1])+"|"
-    list_of_pubs + str(end_location[0])+","+str(end_location[1])+"|"
+    list_of_pubs += str(start_location[0])+","+str(start_location[1])+"|"
+    list_of_pubs += str(end_location[0])+","+str(end_location[1])+"|"
     for i in b["results"][0:8]:
         list_of_pubs = list_of_pubs + str(i["geometry"]["location"]["lat"])+","+str(i["geometry"]["location"]["lng"])+"|"
         pub_ids.append([i["geometry"]["location"]["lat"],i["geometry"]["location"]["lng"]])
@@ -84,18 +84,17 @@ def pub_hunting(input_json):
     
     def sqrt_dst(a, b):
         dst = google_dist(a, b)
-        return np.power(dst / google_dist(A, B), 2)
-    
+        return np.power(dst, 2)
     
     def loss(path):
         arr = [A] + path + [B]
-        pairs = ((arr[i], arr[i+1]) for i in range(len(arr)-1))
+        pairs = [(arr[i], arr[i+1]) for i in range(len(arr)-1)]
         return sum(sqrt_dst(pair[0], pair[1]) for pair in pairs)
     
     while len(path) < no_pubs:
-        options = [(point, index) for point in points for index in range(0, len(path)+1)]
+        options = [(point, index, loss(insert(path, index, point))) for point in points for index in range(0, len(path)+1)]
     
-        point, index = min(options, key=lambda x: loss(insert(path, x[1], x[0])))
+        point, index, l = min(options, key=lambda x: x[2])
         path.insert(index, point)
         points.remove(point)
     
@@ -104,5 +103,4 @@ def pub_hunting(input_json):
     path = [A] + path + [B]
     final_pubs = [pub_ids[x] for x in path]
     return final_pubs
-    
     
