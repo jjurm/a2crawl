@@ -31,7 +31,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   sendRequest(formValues) {
     // const url = `https://jsonplaceholder.typicode.com/todos/1`;  // get
     // var items = [];
-    const url = `http://juraj.space:5000/data`;  // post
+    const url = `http://www.juraj.space:5000/data`;  // post
     var items= {
       start_location: formValues.source,
       end_location: formValues.destination,

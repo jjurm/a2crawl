@@ -2,5 +2,10 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">juraj.space</domain>
+        <domain includeSubdomains="true">juraj.space:5000</domain>
+        <domain includeSubdomains="true">juraj.space:5000/data</domain>
+        <domain includeSubdomains="true">http://juraj.space:5000/data</domain>
+        <domain includeSubdomains="true">http://www.juraj.space:5000/data</domain>
     </domain-config>
 </network-security-config>
